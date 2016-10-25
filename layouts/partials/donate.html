@@ -1,0 +1,158 @@
+{{ "<!-- Donate -->" | safeHTML }}
+  <section id="donate" class="main special">
+    <div class="container">
+      <div class="content">
+        <header class="major">
+          <h2>{{ with .Site.Params.donate.title}}{{ . | markdownify }}{{ end }}</h2>
+        </header>
+        <p>{{ with .Site.Params.donate.description }}{{ . | markdownify }}{{ end }}</p>
+        <!-- <form action="" method="post" id="donation-form" style="display:none; ">
+          <div class="message hidden"></div>
+          <label for="name">Your Name</label>
+          <input type="text" name="name" value="" required>
+          <label for="email">Your Email</label>
+          <input type="email" name="email" value="" required placeholder="Email">
+          <label for="">Your Credit Card Information</label>
+          <div class="card-js" data-stripe="true"></div>
+          <label for="amount">Donation Amount</label>
+          <span>$</span> <input type="tel" name="amount" value="" required>
+          <br>
+          <input style="margin-top: 20px" type="submit" class="submit" value="Submit Donation">
+        </form> -->
+        <!-- <a id="donate-modal" href="#donation-form" class="button">Donate!</a> -->
+        <a href="{{ .Site.Params.donate.buttonLink }}" class="button">Go To Donate Platform <i class="fa fa-external-link"></i></a>
+      </div>
+      <a href="#infos" class="goto-next scrolly">Info</a>
+    </div>
+  </section>
+  
+<script type="text/javascript">
+  $(function() {
+    function removeCardInfo($form) {
+      $form.find('.card-number').val('');
+      $form.find('.expiry').val('');
+      $form.find('.cvc').val('');
+    }
+
+    function showMessage($message) {
+      $message.removeClass('hidden');
+    }
+
+    function hideMessage($message) {
+      $message.addClass('hidden');
+    }
+
+    function displayMessage(message, $form, status) {
+      if (typeof status === 'undefined') {
+        status = 'success'
+      }
+      $message = $form.find('.message');
+      $message.removeClass('success');
+      $message.removeClass('error');
+
+      if (status == 'success') {
+        $message.addClass('success');
+      } else {
+        $message.addClass('error');
+      }
+
+      $message.text(message);
+      showMessage($message);
+    }
+    
+    function stripeResponseHandler(status, response) {
+      // Grab the form:
+      console.log(status);
+      var $form = $('#donation-form');
+
+      if (response.error) { // Problem!
+        // Show the errors on the form:
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+        displayMessage('Please double check your credit card information.', $form, 'error');
+
+      } else { // Token was created!
+        // Get the token ID:
+        var token = response.id;
+        // Insert the token ID into the form so it gets submitted to the server:
+        $form.append($('<input type="hidden" name="stripeToken">').val(token));
+        console.log(token);
+        var name = $form.find('[name="name"]').val();
+        var email = $form.find('[name="email"]').val();
+        var amount = $form.find('[name="amount"]').val();
+        $.ajax({
+          url: "https://donate.openarmsministry.org/api/payment",
+          method: "POST",
+          data: {
+            name: name,
+            token: token,
+            email: email,
+            amount: amount
+          }
+        }).success(function (data, statusText) {
+          $form[0].reset();
+          displayMessage('Thank you! Donation Submitted. Please check your inbox.', $form)
+        }).error(function (data, statusText) {
+          console.log(data);
+          displayMessage('We are sorry. Something went wrong. Please go to donate.openarmsministry.org to complete your donation.', $form, 'error');
+        }).done(function () {
+          removeCardInfo($form);
+          enableSubmitButton($form.find('.submit'));
+        })
+
+      }
+    };
+    
+    function hideDonateModal (event) {
+      event.preventDefault();
+      $('#donation-form').css({
+        // display: 'none'
+      });
+      // $('.modal-backdrop').css({
+      //   display: 'none'
+      // });
+    }
+    
+    function showDonateModal (event) {
+      event.preventDefault();
+      $('#donation-form').css({
+        display: 'block',
+        // position: 'fixed'
+      });
+      $('#donate-modal').css({
+        display: 'none'
+      })
+      // $('.modal-backdrop').css({
+      //   display: 'block',
+      //   position: 'fixed'
+      // });
+    }
+    
+    function enableSubmitButton($button) {
+      $button.prop('disable', false);
+      $button.val('Submit Donation');
+    }
+    
+    function disableSubmitButton($button) {
+      $button.prop('disabled', true);
+      $button.val('Please Wait');
+    }
+    
+    $('#donate-modal').click(showDonateModal);
+    $('.close-modal').click(hideDonateModal);
+    $('.modal-backdrop').click(hideDonateModal);
+    
+    var $form = $('#donation-form');
+    $form.submit(function(event) {
+      event.preventDefault();
+      // Disable the submit button to prevent repeated clicks:
+      disableSubmitButton($form.find('.submit'));
+    
+      // Request a token from Stripe:
+      Stripe.card.createToken($form, stripeResponseHandler);
+      
+      // Prevent the form from being submitted:
+      return false;
+    });
+  });
+</script>
