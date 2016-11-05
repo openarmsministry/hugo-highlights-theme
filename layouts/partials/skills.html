@@ -9,10 +9,12 @@
           <p>{{ with .Site.Params.skill_list.description}}{{ . | markdownify }}{{ end }}</p>
         <ul class="icons-grid">
           {{ range .Site.Params.skills }}
-            <li>
+            <hr>
               <span class="icon major {{ .icon }}"></span>
               <h3>{{ .title }}</h3>
-            </li>
+              <p style="text-align: left;">
+                {{ with .description }}{{ . | markdownify}}{{ end }}
+              </p>
           {{ end }}
         </ul>
       </div>
