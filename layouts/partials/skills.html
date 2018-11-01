@@ -10,11 +10,11 @@
         <ul class="icons-grid">
           {{ range .Site.Params.skills }}
             <hr>
-              <span class="icon major {{ .icon }}"></span>
-              <h3>{{ .title }}</h3>
-              <p style="text-align: left;">
-                {{ with .description }}{{ . | markdownify}}{{ end }}
-              </p>
+            <span class="icon major {{ .icon }}"></span>
+            <h3>{{ .title }}</h3>
+            <p style="text-align: left;">
+              {{ with .description }}{{ . | markdownify}}{{ end }}
+            </p>
           {{ end }}
         </ul>
       </div>

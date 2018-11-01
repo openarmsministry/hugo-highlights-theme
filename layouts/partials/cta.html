@@ -6,8 +6,8 @@
         <h2>{{ with .Site.Params.cta.title}}{{ . | markdownify }}{{ end }}</h2>
       </header>
       <p>{{ with .Site.Params.cta.description }}{{ . | markdownify }}{{ end }}</p>
-      <a href="{{ .Site.Params.cta.buttonLink }}" class="button"> {{ .Site.Params.cta.buttonText}} <i class="fa fa-external-link"></i></a>
     </div>
-    <!-- <a href="#about" class="goto-next scrolly">About</a> -->
+    <a href="{{ .Site.Params.cta.buttonLink }}" class="button"> {{ .Site.Params.cta.buttonText}} <i class="fa fa-external-link"></i></a>
+    <!-- <a href="#infos" class="goto-next scrolly">About</a> -->
   </div>
 </section>

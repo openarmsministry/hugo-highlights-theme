@@ -8,6 +8,23 @@
 
 <head>
 	{{ partial "head.html" . }}
+	<style>
+		section .content {
+			text-align: left;
+		}
+
+		section .content a {
+			margin: 0 auto;
+		}
+
+		section .content h3 {
+			text-align: center;
+		}
+
+		section .content .icons-grid {
+			text-align: center;
+		}
+	</style>
 </head>
 
 <body>
@@ -18,6 +35,10 @@
 	{{ if .Site.Params.cta.enable }}
 	{{ partial "cta.html" . }}
 	{{ end }}
+	
+	{{ if .Site.Params.infos.enable }}
+	{{ partial "infos.html" . }}
+	{{ end }}
 
 	{{ if .Site.Params.about.enable }}
 	{{ partial "about.html" . }}
@@ -27,30 +48,26 @@
 	{{ partial "skills.html" . }}
 	{{ end }}
 
-	{{ if .Site.Params.program.enable}}
-	{{ partial "program.html" . }}
-	{{ end }}
-
 	{{ if .Site.Params.volunteer.enable}}
 	{{ partial "volunteer.html" . }}
+	{{ end }}
+
+	{{ if .Site.Params.program.enable}}
+	{{ partial "program.html" . }}
 	{{ end }}
 
 	{{ if .Site.Params.donate.enable}}
 	{{ partial "donate.html" . }}
 	{{ end }}
 
-	{{ if .Site.Params.infos.enable }}
-	{{ partial "infos.html" . }}
-	{{ end }}
-
 	{{ if .Site.Params.footer.enable }}
 	{{"<!-- Footer -->" | safeHTML}}
 	<section id="footer">
-		{{ if .Site.Params.footer.contact.enable }}
-		{{ partial "footer-contact.html" . }}
-		{{ end }}
 		{{ if .Site.Params.subscribe.enable}}
 		{{ partial "subscribe.html" . }}
+		{{ end }}
+		{{ if .Site.Params.footer.contact.enable }}
+		{{ partial "footer-contact.html" . }}
 		{{ end }}
 		{{ if .Site.Params.footer.social_list.enable }}
 		{{ partial "footer-social.html" . }}

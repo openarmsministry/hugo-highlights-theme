@@ -9,6 +9,6 @@
         <p>{{ with .Site.Params.infos.description }}{{ . | markdownify }}{{ end }}</p>
       </div>
       <a href="{{ .Site.Params.infos.buttonLink }}" class="button"> {{ .Site.Params.infos.buttonText}} <i class="fa fa-external-link"></i></a>
-      <!-- <a href="#footer" class="goto-next scrolly">{{ with .Site.Params.infos.buttonText }}{{ . | markdownify }}{{ end }}</a> -->
+      <a href="#about" class="goto-next scrolly">{{ with .Site.Params.infos.buttonText }}{{ . | markdownify }}{{ end }}</a>
     </div>
   </section>
